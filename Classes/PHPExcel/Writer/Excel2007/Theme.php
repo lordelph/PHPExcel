@@ -35,6 +35,14 @@
  */
 class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPart
 {
+    /*
+     * Opening a generated xlsx file in MacOS Numbers shows a warning about missing Calibri font, even if the sheet
+     * isn't using it. The change below changes the embedded theme to not reference Calibri, which appears to fix
+     * the problem....
+     */
+    public static $majorFont='Arial'; //was Cambria
+    public static $minorFont='Arial'; //was Calibri
+
     /**
      * Map of Major fonts to write
      * @static    array of string
@@ -194,12 +202,12 @@ class PHPExcel_Writer_Excel2007_Theme extends PHPExcel_Writer_Excel2007_WriterPa
 
                     // a:majorFont
                     $objWriter->startElement('a:majorFont');
-                        $this->writeFonts($objWriter, 'Cambria', self::$majorFonts);
+                        $this->writeFonts($objWriter, self::$majorFont, self::$majorFonts);
                     $objWriter->endElement();
 
                     // a:minorFont
                     $objWriter->startElement('a:minorFont');
-                        $this->writeFonts($objWriter, 'Calibri', self::$minorFonts);
+                        $this->writeFonts($objWriter, self::$minorFont, self::$minorFonts);
                     $objWriter->endElement();
 
                 $objWriter->endElement();
